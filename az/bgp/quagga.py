@@ -52,8 +52,13 @@ class Quagga(BaseAdapter):
                                        .decode('utf-8')))
 
     def route_ips(self, ips):
+        total_count = len(ips)
+        added = 0
+
         for ip_set in iterby(ips, 50):
-            logger.debug("Adding %d routes", len(ip_set))
+            added += len(ip_set)
+
+            logger.debug("Adding %d/%d routes", added, total_count)
 
             self.run.vtysh(c=quote('conf t\nrouter bgp {}\n{}'.format(
                 self._as,
